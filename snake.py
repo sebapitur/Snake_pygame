@@ -144,7 +144,7 @@ def drawGrid(w, rows, surface):
 
 def redrawWindow(surface):
     global rows, width, s, snack, trap
-    surface.fill((0,0,0))
+    surface.fill((204,102,0))
     s.draw(surface)
     snack.draw(surface)
     trap.draw(surface)
@@ -156,11 +156,10 @@ def redrawWindow(surface):
 def randomSnack(rows, item):
 
     positions = item.body
-
     while True:
         x = random.randrange(rows)
         y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == bomb.pos or (x,y) == trap.pos:
             continue
         else:
             break
@@ -170,11 +169,10 @@ def randomSnack(rows, item):
 def randomTrap(rows, item):
 
     positions = item.body
-
     while True:
         x = random.randrange(rows)
         y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == bomb.pos or (x,y) == snack.pos:
             continue
         else:
             break
@@ -184,11 +182,10 @@ def randomTrap(rows, item):
 def randomBomb(rows, item):
 
     positions = item.body
-
     while True:
         x = random.randrange(rows)
         y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == trap.pos or (x,y) == snack.pos:
             continue
         else:
             break
@@ -212,15 +209,16 @@ def main():
     rows = 20
     win = pygame.display.set_mode((width, width))
     s = snake((255,0,0), (10,10))
-    snack = cube(randomSnack(rows, s), color=(0,255,0))
-    trap = cube(randomTrap(rows, s), color=(65,105,225))
-    bomb = cube(randomBomb(rows, s), color=(100,20,0))
-    
+    snack = cube((12, 10), 0, 0, color=(0,255,0))
+    trap = cube((14 ,16), 0, 0, color=(64,64,64))
+    bomb = cube(randomBomb(rows, s), color=(0,0,0))
+    redrawWindow(win)
     flag = True
 
     clock = pygame.time.Clock()
     
     while flag:
+        redrawWindow(win)
         pygame.time.delay(50)
         clock.tick(10)
         s.move()
@@ -229,15 +227,12 @@ def main():
             snack = cube(randomSnack(rows, s), color=(0,255,0))
         if s.body[0].pos == trap.pos:
             s.remCube()
-            trap = cube(randomTrap(rows, s), color=(65,105,225))
+            trap = cube(randomTrap(rows, s), color=(64,64,64))
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])) or s.body[0].pos == bomb.pos:
                 print('Score: ', len(s.body))
                 message_box('You Lost!', 'Play again...')
                 s.reset((10,10))
                 break
-
-            
-        redrawWindow(win)
 
 main()
