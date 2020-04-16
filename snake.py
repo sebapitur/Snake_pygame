@@ -163,16 +163,7 @@ def randomCube(rows, item):
                 if (x,y) == bomb.pos:
                     Ok = False
         if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == snack.pos or (x,y) == trap.pos or Ok == False:
-            continue
-        # elif (x,y) == snack.pos or (x,y) == trap.pos:
-         #   continue
-        #elif len(bombs) != 0:
-        #    Ok = True
-         #   for bomb in bombs:
-         #       if (x,y) == bomb.pos:
-          #          Ok = False
-           # if Ok == False:
-            #    continue 
+            continue 
         else:
            break
     return (x,y)
