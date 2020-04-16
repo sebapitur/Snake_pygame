@@ -151,16 +151,29 @@ def redrawWindow(surface):
 
 
 def randomCube(rows, item):
+    global bombs, snack, trap
     positions = item.body
 
     while True:
         x = random.randrange(rows)
         y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+        Ok = True
+        for bomb in bombs:
+            if (x,y) == bomb.pos:
+                Ok = False
+        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == snack.pos or (x,y) == trap.pos or Ok == False:
             continue
+        # elif (x,y) == snack.pos or (x,y) == trap.pos:
+         #   continue
+        #elif len(bombs) != 0:
+        #    Ok = True
+         #   for bomb in bombs:
+         #       if (x,y) == bomb.pos:
+          #          Ok = False
+           # if Ok == False:
+            #    continue 
         else:
-            break
-        
+           break
     return (x,y)
 
 
@@ -179,8 +192,8 @@ def main():
     first = 0
     win = pygame.display.set_mode((width, width))
     s = snake((255,0,0), (10,10))
-    snack = cube(randomCube(rows, s), color=(0,255,0))
-    trap = cube(randomCube(rows, s), color=(153, 153, 102))
+    snack = cube((11,13), color=(0,255,0))
+    trap = cube((7,8), color=(153, 153, 102))
     
     clock = pygame.time.Clock()
     
@@ -194,7 +207,7 @@ def main():
         if s.body[0].pos == trap.pos:
             s.delCube()
             trap = cube(randomCube(rows, s), color=(153, 153, 102))
-        if len(s.body) % 10 == 0:
+        if len(s.body) % 7 == 0:
             first += 1
         else:
             first = 0
