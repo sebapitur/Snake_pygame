@@ -4,15 +4,15 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 
+
 class cube(object):
     rows = 20
     w = 500
     def __init__(self,start,dirnx=1,dirny=0,color=(255,0,0)):
         self.pos = start
-        self.dirnx = -1
+        self.dirnx = 1
         self.dirny = 0
         self.color = color
-
         
     def move(self, dirnx, dirny):
         self.dirnx = dirnx
@@ -33,8 +33,6 @@ class cube(object):
             pygame.draw.circle(surface, (0,0,0), circleMiddle, radius)
             pygame.draw.circle(surface, (0,0,0), circleMiddle2, radius)
         
-
-
 
 class snake(object):
     body = []
@@ -73,6 +71,7 @@ class snake(object):
                     self.dirnx = 0
                     self.dirny = 1
                     self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+
         for i, c in enumerate(self.body):
             p = c.pos[:]
             if p in self.turns:
@@ -87,7 +86,6 @@ class snake(object):
                 elif c.dirny == -1 and c.pos[1] <= 0: c.pos = (c.pos[0],c.rows-1)
                 else: c.move(c.dirnx,c.dirny)
         
-
     def reset(self, pos):
         self.head = cube(pos)
         self.body = []
@@ -95,7 +93,6 @@ class snake(object):
         self.turns = {}
         self.dirnx = 0
         self.dirny = 1
-
 
     def addCube(self):
         tail = self.body[-1]
@@ -112,18 +109,17 @@ class snake(object):
 
         self.body[-1].dirnx = dx
         self.body[-1].dirny = dy
-    
-    def remCube(self):
+
+    def delCube(self):
         if len(self.body) == 1:
-            print('Score: ', len(s.body))
-            message_box('You Lost!', 'Play again...')
+            message_box('Score: ' + str(len(s.body)), 'Play again!')
             s.reset((10,10))
         else:
             del self.body[-1]
 
     def draw(self, surface):
         for i, c in enumerate(self.body):
-            if i ==0:
+            if i == 0:
                 c.draw(surface, True)
             else:
                 c.draw(surface)
@@ -143,96 +139,80 @@ def drawGrid(w, rows, surface):
         
 
 def redrawWindow(surface):
-    global rows, width, s, snack, trap
-    surface.fill((204,102,0))
+    global rows, width, s, snack, trap, bombs
+    surface.fill((153, 51, 51))
     s.draw(surface)
     snack.draw(surface)
     trap.draw(surface)
-    bomb.draw(surface)
+    for bomb in bombs:
+        bomb.draw(surface)
     drawGrid(width,rows, surface)
     pygame.display.update()
 
 
-def randomSnack(rows, item):
-
+def randomCube(rows, item):
     positions = item.body
+
     while True:
         x = random.randrange(rows)
         y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == bomb.pos or (x,y) == trap.pos:
+        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
             continue
         else:
             break
         
     return (x,y)
 
-def randomTrap(rows, item):
-
-    positions = item.body
-    while True:
-        x = random.randrange(rows)
-        y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == bomb.pos or (x,y) == snack.pos:
-            continue
-        else:
-            break
-        
-    return (x,y)
-
-def randomBomb(rows, item):
-
-    positions = item.body
-    while True:
-        x = random.randrange(rows)
-        y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == trap.pos or (x,y) == snack.pos:
-            continue
-        else:
-            break
-        
-    return (x,y)
 
 def message_box(subject, content):
     root = tk.Tk()
     root.attributes("-topmost", True)
     root.withdraw()
     messagebox.showinfo(subject, content)
-    try:
-        root.destroy()
-    except:
-        pass
 
 
 def main():
-    global width, rows, s, snack, trap, bomb
+    global width, rows, s, snack, trap, bombs
+    bombs = []
     width = 500
     rows = 20
+    first = 0
     win = pygame.display.set_mode((width, width))
     s = snake((255,0,0), (10,10))
-    snack = cube((12, 10), 0, 0, color=(0,255,0))
-    trap = cube((14 ,16), 0, 0, color=(64,64,64))
-    bomb = cube(randomBomb(rows, s), color=(0,0,0))
-    redrawWindow(win)
-    flag = True
-
+    snack = cube(randomCube(rows, s), color=(0,255,0))
+    trap = cube(randomCube(rows, s), color=(153, 153, 102))
+    
     clock = pygame.time.Clock()
     
-    while flag:
-        redrawWindow(win)
+    while True:
         pygame.time.delay(50)
         clock.tick(10)
         s.move()
         if s.body[0].pos == snack.pos:
             s.addCube()
-            snack = cube(randomSnack(rows, s), color=(0,255,0))
+            snack = cube(randomCube(rows, s), color=(0,255,0))
         if s.body[0].pos == trap.pos:
-            s.remCube()
-            trap = cube(randomTrap(rows, s), color=(64,64,64))
+            s.delCube()
+            trap = cube(randomCube(rows, s), color=(153, 153, 102))
+        if len(s.body) % 10 == 0:
+            first += 1
+        else:
+            first = 0
+        if first == 1:
+            bombs.append(cube(randomCube(rows, s), color=(0,0,0)))
+        hit_bomb = False
+        for bomb in bombs:
+            if s.body[0].pos == bomb.pos:
+                hit_bomb = True
         for x in range(len(s.body)):
-            if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])) or s.body[0].pos == bomb.pos:
-                print('Score: ', len(s.body))
-                message_box('You Lost!', 'Play again...')
+            if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])) or hit_bomb:
+                message_box('Score: ' + str(len(s.body)), 'Play again!')
+                bombs = []
                 s.reset((10,10))
                 break
 
-main()
+        redrawWindow(win)
+
+
+if __name__ == '__main__':
+    main()
