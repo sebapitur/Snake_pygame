@@ -112,15 +112,15 @@ class snake(object):
 
         self.body[-1].dirnx = dx
         self.body[-1].dirny = dy
+    
     def remCube(self):
-        #tail = self.body[-1]
         if len(self.body) == 1:
             print('Score: ', len(s.body))
             message_box('You Lost!', 'Play again...')
             s.reset((10,10))
         else:
             del self.body[-1]
-        
+
     def draw(self, surface):
         for i, c in enumerate(self.body):
             if i ==0:
@@ -143,10 +143,11 @@ def drawGrid(w, rows, surface):
         
 
 def redrawWindow(surface):
-    global rows, width, s, snack, bomb
+    global rows, width, s, snack, trap
     surface.fill((0,0,0))
     s.draw(surface)
     snack.draw(surface)
+    trap.draw(surface)
     bomb.draw(surface)
     drawGrid(width,rows, surface)
     pygame.display.update()
@@ -166,7 +167,21 @@ def randomSnack(rows, item):
         
     return (x,y)
 
-def randomBombs(rows, item):
+def randomTrap(rows, item):
+
+    positions = item.body
+
+    while True:
+        x = random.randrange(rows)
+        y = random.randrange(rows)
+        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+            continue
+        else:
+            break
+        
+    return (x,y)
+
+def randomBomb(rows, item):
 
     positions = item.body
 
@@ -192,13 +207,15 @@ def message_box(subject, content):
 
 
 def main():
-    global width, rows, s, snack, bomb
+    global width, rows, s, snack, trap, bomb
     width = 500
     rows = 20
     win = pygame.display.set_mode((width, width))
     s = snake((255,0,0), (10,10))
     snack = cube(randomSnack(rows, s), color=(0,255,0))
-    bomb = cube(randomBombs(rows, s), color=(65,105,225))
+    trap = cube(randomTrap(rows, s), color=(65,105,225))
+    bomb = cube(randomBomb(rows, s), color=(100,20,0))
+    
     flag = True
 
     clock = pygame.time.Clock()
@@ -209,12 +226,12 @@ def main():
         s.move()
         if s.body[0].pos == snack.pos:
             s.addCube()
-            snack = cube(randomBombs(rows, s), color=(0,255,0))
-        if s.body[0].pos == bomb.pos:
+            snack = cube(randomSnack(rows, s), color=(0,255,0))
+        if s.body[0].pos == trap.pos:
             s.remCube()
-            bomb = cube(randomBombs(rows, s), color=(65,105,225))
+            trap = cube(randomTrap(rows, s), color=(65,105,225))
         for x in range(len(s.body)):
-            if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])):
+            if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])) or s.body[0].pos == bomb.pos:
                 print('Score: ', len(s.body))
                 message_box('You Lost!', 'Play again...')
                 s.reset((10,10))
