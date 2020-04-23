@@ -1,5 +1,6 @@
 # Snake_pygame
-sudo apt-get install python3-tk
+<img src="Snake.png" width="480">
+
 # Installation
 
 Before you run the game, you need to be sure you have installed Python3 and 
@@ -24,7 +25,6 @@ Pygame. In case you haven't, here are some simple instructions to follow:
 # How to test your Snake skills - instructions
 	Just enjoy our game using the arrows, and feel free to press the 
 	'Play again' button as many times as you want.
-<img src="Snake.png" width="480">
 
 # Creators
 	
