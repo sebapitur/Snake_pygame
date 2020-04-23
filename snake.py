@@ -4,34 +4,42 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 
+RED = (255, 0, 0)
+BACKGROUND = (153, 51, 51)
+WHITE = (255,255,255)
+GRAY = (153, 153, 102)
+BLACK = (0,0,0)
+GREEN = (0,255,0)
+DELAY = 50
+SPEED = 10
 
 class cube(object):
     rows = 20
     w = 500
-    def __init__(self,start,dirnx=1,dirny=0,color=(255,0,0)):
+    def __init__(self,start,move_x=1,move_y=0,color=RED):
         self.pos = start
-        self.dirnx = 1
-        self.dirny = 0
+        self.move_x = 1
+        self.move_y = 0
         self.color = color
         
-    def move(self, dirnx, dirny):
-        self.dirnx = dirnx
-        self.dirny = dirny
-        self.pos = (self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
+    def move(self, move_x, move_y):
+        self.move_x = move_x
+        self.move_y = move_y
+        self.pos = (self.pos[0] + self.move_x, self.pos[1] + self.move_y)
 
     def draw(self, surface, eyes=False):
-        dis = self.w // self.rows
+        distance = self.w // self.rows
         i = self.pos[0]
         j = self.pos[1]
 
-        pygame.draw.rect(surface, self.color, (i*dis+1,j*dis+1, dis-2, dis-2))
+        pygame.draw.rect(surface, self.color, (i*distance,j*distance, distance, distance))
         if eyes:
-            centre = dis//2
+            centre = distance//2
             radius = 3
-            circleMiddle = (i*dis+centre-radius,j*dis+8)
-            circleMiddle2 = (i*dis + dis -radius*2, j*dis+8)
-            pygame.draw.circle(surface, (0,0,0), circleMiddle, radius)
-            pygame.draw.circle(surface, (0,0,0), circleMiddle2, radius)
+            circleMiddle = (i*distance+centre-radius,j*distance+8)
+            circleMiddle2 = (i*distance + distance -radius*2, j*distance+8)
+            pygame.draw.circle(surface, BLACK, circleMiddle, radius)
+            pygame.draw.circle(surface, BLACK, circleMiddle2, radius)
         
 
 class snake(object):
@@ -41,8 +49,8 @@ class snake(object):
         self.color = color
         self.head = cube(pos)
         self.body.append(self.head)
-        self.dirnx = 0
-        self.dirny = 1
+        self.move_x = 0
+        self.move_y = 1
 
     def move(self):
         for event in pygame.event.get():
@@ -53,24 +61,24 @@ class snake(object):
 
             for key in keys:
                 if keys[pygame.K_LEFT]:
-                    self.dirnx = -1
-                    self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.move_x = -1
+                    self.move_y = 0
+                    self.turns[self.head.pos[:]] = [self.move_x, self.move_y]
 
                 elif keys[pygame.K_RIGHT]:
-                    self.dirnx = 1
-                    self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.move_x = 1
+                    self.move_y = 0
+                    self.turns[self.head.pos[:]] = [self.move_x, self.move_y]
 
                 elif keys[pygame.K_UP]:
-                    self.dirnx = 0
-                    self.dirny = -1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.move_x = 0
+                    self.move_y = -1
+                    self.turns[self.head.pos[:]] = [self.move_x, self.move_y]
 
                 elif keys[pygame.K_DOWN]:
-                    self.dirnx = 0
-                    self.dirny = 1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.move_x = 0
+                    self.move_y = 1
+                    self.turns[self.head.pos[:]] = [self.move_x, self.move_y]
 
         for i, c in enumerate(self.body):
             p = c.pos[:]
@@ -80,35 +88,26 @@ class snake(object):
                 if i == len(self.body)-1:
                     self.turns.pop(p)
             else:
-                if c.dirnx == -1 and c.pos[0] <= 0: c.pos = (c.rows-1, c.pos[1])
-                elif c.dirnx == 1 and c.pos[0] >= c.rows-1: c.pos = (0,c.pos[1])
-                elif c.dirny == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
-                elif c.dirny == -1 and c.pos[1] <= 0: c.pos = (c.pos[0],c.rows-1)
-                else: c.move(c.dirnx,c.dirny)
+                if c.move_x == -1 and c.pos[0] <= 0: c.pos = (c.rows-1, c.pos[1])
+                elif c.move_x == 1 and c.pos[0] >= c.rows-1: c.pos = (0,c.pos[1])
+                elif c.move_y == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
+                elif c.move_y == -1 and c.pos[1] <= 0: c.pos = (c.pos[0],c.rows-1)
+                else: c.move(c.move_x,c.move_y)
         
     def reset(self, pos):
         self.head = cube(pos)
         self.body = []
         self.body.append(self.head)
         self.turns = {}
-        self.dirnx = 0
-        self.dirny = 1
+        self.move_x = 0
+        self.move_y = 1
 
     def addCube(self):
         tail = self.body[-1]
-        dx, dy = tail.dirnx, tail.dirny
-
-        if dx == 1 and dy == 0:
-            self.body.append(cube((tail.pos[0]-1,tail.pos[1])))
-        elif dx == -1 and dy == 0:
-            self.body.append(cube((tail.pos[0]+1,tail.pos[1])))
-        elif dx == 0 and dy == 1:
-            self.body.append(cube((tail.pos[0],tail.pos[1]-1)))
-        elif dx == 0 and dy == -1:
-            self.body.append(cube((tail.pos[0],tail.pos[1]+1)))
-
-        self.body[-1].dirnx = dx
-        self.body[-1].dirny = dy
+        direction_x, direction_y = tail.move_x, tail.move_y
+        self.body.append(cube((tail.pos[0]-direction_x, tail.pos[1] - direction_y)))
+        self.body[-1].move_x = direction_x
+        self.body[-1].move_y =direction_y
 
     def delCube(self):
         if len(self.body) == 1:
@@ -126,21 +125,21 @@ class snake(object):
 
 
 def drawGrid(w, rows, surface):
-    sizeBtwn = w // rows
+    side_length = w // rows
 
     x = 0
     y = 0
     for l in range(rows):
-        x = x + sizeBtwn
-        y = y + sizeBtwn
+        x = x + side_length
+        y = y + side_length
 
-        pygame.draw.line(surface, (255,255,255), (x,0),(x,w))
-        pygame.draw.line(surface, (255,255,255), (0,y),(w,y))
+        pygame.draw.line(surface, WHITE, (x,0),(x,w))
+        pygame.draw.line(surface, WHITE, (0,y),(w,y))
         
 
 def redrawWindow(surface):
     global rows, width, s, snack, trap, bombs
-    surface.fill((153, 51, 51))
+    surface.fill(BACKGROUND)
     s.draw(surface)
     snack.draw(surface)
     trap.draw(surface)
@@ -164,15 +163,6 @@ def randomCube(rows, item):
                     Ok = False
         if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == snack.pos or (x,y) == trap.pos or Ok == False:
             continue
-        # elif (x,y) == snack.pos or (x,y) == trap.pos:
-         #   continue
-        #elif len(bombs) != 0:
-        #    Ok = True
-         #   for bomb in bombs:
-         #       if (x,y) == bomb.pos:
-          #          Ok = False
-           # if Ok == False:
-            #    continue 
         else:
            break
     return (x,y)
@@ -192,28 +182,28 @@ def main():
     rows = 20
     first = 0
     win = pygame.display.set_mode((width, width))
-    s = snake((255,0,0), (10,10))
-    snack = cube((11,13), color=(0,255,0))
-    trap = cube((7,8), color=(153, 153, 102))
+    s = snake(RED, (10,10))
+    snack = cube((11,13), color=GREEN)
+    trap = cube((7,8), color=GRAY)
     
     clock = pygame.time.Clock()
     
     while True:
-        pygame.time.delay(50)
-        clock.tick(10)
+        pygame.time.delay(DELAY)
+        clock.tick(SPEED)
         s.move()
         if s.body[0].pos == snack.pos:
             s.addCube()
-            snack = cube(randomCube(rows, s), color=(0,255,0))
+            snack = cube(randomCube(rows, s), color=GREEN)
         if s.body[0].pos == trap.pos:
             s.delCube()
-            trap = cube(randomCube(rows, s), color=(153, 153, 102))
+            trap = cube(randomCube(rows, s), color=GRAY)
         if len(s.body) % 7 == 0:
             first += 1
         else:
             first = 0
         if first == 1:
-            bombs.append(cube(randomCube(rows, s), color=(0,0,0)))
+            bombs.append(cube(randomCube(rows, s), color=BLACK))
         hit_bomb = False
         for bomb in bombs:
             if s.body[0].pos == bomb.pos:
