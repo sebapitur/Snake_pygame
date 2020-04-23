@@ -15,8 +15,7 @@ Pygame. In case you haven't, here are some simple instructions to follow:
     There are few steps left before your journey begins. Make sure to follow
     the next steps:
 
-    1.Clone the repo: git clone 
-   https://github.com/sebapitur/Snake_pygame
+   1.Clone the repo: git clone https://github.com/sebapitur/Snake_pygame
    
     2.Go to the directory you cloned the repo (in your terminal)
     3.Use the command in terminal: python3 snake.py
