@@ -1,60 +1,33 @@
 # Snake_pygame
 sudo apt-get install python3-tk
-It is highly recommended to read the report to get a light introduction to  emulation. The report is relevant, eventhough you want to contribute to another emulator, or create your own.
-
-If you've read the report and want more explicit details, have a look at the Pan Docs.
-
-If you are looking to make a bot or AI, you can find all the external components in the PyBoy Documentation. There is also a short example on our Wiki page Scripts, AI and Bots as well as in the examples directory. If more features are needed, or if you find a bug, don't hesitate to make an issue here on GitHub, or write on our Discord channel.
-
-
 # Installation
 
-The instructions are simple, if you already have a functioning Python environment on your machine.
+Before you run the game, you need to be sure you have installed Python3 and 
+Pygame. In case you haven't, here are some simple instructions to follow:
 
-    Install SDL2 through your package manager:
-        Ubuntu: sudo apt install libsdl2-dev
-        Fedora: sudo dnf install SDL2-devel
-        macOS: brew install sdl2
+    1. Install Python3: sudo apt-get install python3
+    2. Install Pygame: sudo apt-get install python-pygame
+    3. Install tkinter module: sudo apt-get install python3-tk
 
-    Install PyBoy using pip install pyboy (add --user if your system asks)
+# Running the program(on Ubuntu/Linux)
 
-Now you're ready! Either use PyBoy directly from the terminal $ pyboy file.rom or use it in your Python scripts:
+    There are few steps left before your journey begins. Make sure to follow
+    the next steps:
 
-from pyboy import PyBoy
-pyboy = PyBoy('ROMs/gamerom.gb')
-while not pyboy.tick():
-    pass
+    1.Clone the repo: git clone https://github.com/sebapitur/Snake_pygame
+    2.Go to the directory you cloned the repo (in your terminal)
+    3.Use the command in terminal: python3 snake.py
 
-If you need more details, or if you need to compile from source, check out the detailed installation instructions. We support: macOS, Raspberry Pi (Raspbian), Linux (Ubuntu), and Windows 10.
 
-At the Wiki page, you will also find out how to interface with PyBoy from your own project: Wiki.
-Contributors
+# How to test your Snake skills - instructions
+	Just enjoy our game using the arrows, and feel free to press the 
+	'Play again' button as many times as you want.
+    
 
-Thanks to all the people, who have contributed to the project!
-Original Developers
+# Creators
 
-    Asger Anders Lund Hansen - AsgerLundHansen
-    Mads Ynddal - baekalfen
-    Troels Ynddal - troelsy
+Ignat Andrei-Horia and Pitur Sebastian
 
-# GitHub Collaborators
+#Contribution
 
-    Kristian Sims - krs013
-
-# Student Projects
-
-    Rewind Time: Jacob Olsen - JacobO1
-    Link Cable: Jonas Flach-Jensen - thejomas
-
-# Contribute
-
-Any contribution is appreciated. The currently known errors are registered in the Issues tab. Feel free to take a swing at any one of them.
-
-For the more major features, there are the following that you can give a try. They are also described in more detail in the project list:
-
-    Color
-    Link Cable
-    (Experimental) AI - use the botsupport or game wrappers to train a neural network
-    (Experimental) Game Wrappers - make wrappers for popular games
-
-If you want to implement something which is not on the list, feel free to do so anyway. If you want to merge it into our repo, then just send a pull request and we will have a look at it.
+We appreciate any contribution to this project regarding the bugs you may find.
