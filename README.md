@@ -3,8 +3,8 @@
 
 # Installation
 
-    Before you run the game, you need to be sure you have installed Python3 and 
-    Pygame. In case you haven't, here are some simple instructions to follow:
+    Before you run the game, you need to be sure you have installed Python3, Pygame and
+    tkinter module. In case you haven't, here are some simple instructions to follow:
 
     1. Install Python3: sudo apt-get install python3
     2. Install Pygame: sudo apt-get install python-pygame
@@ -19,6 +19,7 @@
 git clone https://github.com/sebapitur/Snake_pygame
 
     2. Go to the directory you cloned the repo (in your terminal)
+    
     3. Use the command in terminal: python3 snake.py
 
 
