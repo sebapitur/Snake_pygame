@@ -20,14 +20,15 @@ Pygame. In case you haven't, here are some simple instructions to follow:
 
 
 # How to test your Snake skills - instructions
+	
 	Just enjoy our game using the arrows, and feel free to press the 
 	'Play again' button as many times as you want.
     
 
 # Creators
 
-Ignat Andrei-Horia and Pitur Sebastian
+	Ignat Andrei-Horia and Pitur Sebastian
 
-#Contribution
+# Contribution
 
-We appreciate any contribution to this project regarding the bugs you may find.
+	We appreciate any contribution to this project regarding the bugs you may find.
