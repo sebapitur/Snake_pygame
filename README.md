@@ -20,7 +20,7 @@ Pygame. In case you haven't, here are some simple instructions to follow:
 
 
 # How to test your Snake skills - instructions
-	
+	<img src="Snake.png" width="480">
 	Just enjoy our game using the arrows, and feel free to press the 
 	'Play again' button as many times as you want.
     
