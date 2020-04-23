@@ -11,7 +11,7 @@ GRAY = (153, 153, 102)
 BLACK = (0,0,0)
 GREEN = (0,255,0)
 DELAY = 50
-SPEED = 7
+SPEED = 8
 
 class cube(object):
     rows = 20
