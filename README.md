@@ -7,7 +7,7 @@ If you've read the report and want more explicit details, have a look at the Pan
 If you are looking to make a bot or AI, you can find all the external components in the PyBoy Documentation. There is also a short example on our Wiki page Scripts, AI and Bots as well as in the examples directory. If more features are needed, or if you find a bug, don't hesitate to make an issue here on GitHub, or write on our Discord channel.
 
 
-Installation
+# Installation
 
 The instructions are simple, if you already have a functioning Python environment on your machine.
 
@@ -37,16 +37,16 @@ Original Developers
     Mads Ynddal - baekalfen
     Troels Ynddal - troelsy
 
-GitHub Collaborators
+# GitHub Collaborators
 
     Kristian Sims - krs013
 
-Student Projects
+# Student Projects
 
     Rewind Time: Jacob Olsen - JacobO1
     Link Cable: Jonas Flach-Jensen - thejomas
 
-Contribute
+# Contribute
 
 Any contribution is appreciated. The currently known errors are registered in the Issues tab. Feel free to take a swing at any one of them.
 
