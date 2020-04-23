@@ -11,7 +11,7 @@ GRAY = (153, 153, 102)
 BLACK = (0,0,0)
 GREEN = (0,255,0)
 DELAY = 50
-SPEED = 10
+SPEED = 7
 
 class cube(object):
     rows = 20
@@ -162,11 +162,7 @@ def randomCube(rows, item):
                 if (x,y) == bomb.pos:
                     Ok = False
         if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0 or (x,y) == snack.pos or (x,y) == trap.pos or Ok == False:
-<<<<<<< HEAD
             continue
-=======
-            continue 
->>>>>>> ba1c8c981f24ce876cfa6c6cd7f4a187d08836c4
         else:
            break
     return (x,y)
